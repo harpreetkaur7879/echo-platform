@@ -4,9 +4,6 @@ const { connectDB }  = require('./db');
 const identityRoutes = require('./routes/identityRoutes');
 
 const app = express();
-
-connectDB();
-
 app.use(express.json());
 app.use('/identity', identityRoutes);
 
@@ -20,6 +17,11 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Identity Service running on port ${process.env.PORT} 🌑`);
-});
+const start = async () => {
+  await connectDB();
+  app.listen(process.env.PORT, () => {
+    console.log('Identity Service running on port ' + process.env.PORT + ' 🌑');
+  });
+};
+
+start();
